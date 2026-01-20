@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{d28528ee-c6c5-4530-abb4-a981039131ac}">
+		<property name="name">
+			<value>HeartsCount</value>
+		</property>
+		<relationship name="folder">
+			<destination>{95daf348-f7cd-49a4-8bdb-a0303fea1cc2}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{e4a68e61-ee45-49fc-b913-07d0cf649c53}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{e4a68e61-ee45-49fc-b913-07d0cf649c53}">
+		<property name="maximum">
+			<value>20</value>
+		</property>
+		<property name="isGlobal">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{8c8d12a4-fd1f-4afd-bc59-16b2617451af}</destination>
+		</relationship>
+	</object>
+	<object class="SeekModulator" id="{8c8d12a4-fd1f-4afd-bc59-16b2617451af}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>cursorPosition</value>
+		</property>
+		<property name="speedDescending">
+			<value>0.0099999997764825821</value>
+		</property>
+		<property name="asymmetric">
+			<value>true</value>
+		</property>
+	</object>
+</objects>

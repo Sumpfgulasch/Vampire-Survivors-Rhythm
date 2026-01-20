@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{6d22fb8d-bfa5-4e83-8048-dd0627d80ef0}">
+		<property name="name">
+			<value>MeowSpawnRate</value>
+		</property>
+		<relationship name="folder">
+			<destination>{95daf348-f7cd-49a4-8bdb-a0303fea1cc2}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{0ee2cb08-82da-4114-98c2-2bddcba8d666}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{0ee2cb08-82da-4114-98c2-2bddcba8d666}">
+		<property name="minimum">
+			<value>1</value>
+		</property>
+		<property name="maximum">
+			<value>5</value>
+		</property>
+		<property name="isGlobal">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>1</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+	</object>
+</objects>

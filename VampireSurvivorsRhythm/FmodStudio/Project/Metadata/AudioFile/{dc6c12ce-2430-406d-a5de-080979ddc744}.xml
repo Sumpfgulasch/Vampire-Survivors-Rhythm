@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{dc6c12ce-2430-406d-a5de-080979ddc744}">
+		<property name="assetPath">
+			<value>blop3-006.ogg</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.023416666666666665</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{0dcede57-ea40-4df7-adb8-fad7a9a883a9}</destination>
+		</relationship>
+	</object>
+</objects>

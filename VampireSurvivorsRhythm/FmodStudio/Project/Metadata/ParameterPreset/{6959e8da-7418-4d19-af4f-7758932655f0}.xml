@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{6959e8da-7418-4d19-af4f-7758932655f0}">
+		<property name="name">
+			<value>TriggerMeow</value>
+		</property>
+		<relationship name="folder">
+			<destination>{95daf348-f7cd-49a4-8bdb-a0303fea1cc2}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{6ec714c3-be8e-465c-b49c-9a15104aa357}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{6ec714c3-be8e-465c-b49c-9a15104aa357}">
+		<property name="isGlobal">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="velocity">
+			<value>-4</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+	</object>
+</objects>
