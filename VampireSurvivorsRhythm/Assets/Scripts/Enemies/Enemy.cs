@@ -120,12 +120,12 @@ public class Enemy : MonoBehaviour
         if (Target == null || enemyData == null) return;
         
         // Calculate direction to target
-        Vector3 direction = (Target.position - transform.position);
+        Vector3 direction = (Target.position - rb.position);
         direction.y = 0f; // Keep on XZ plane
         direction.Normalize();
         
         // Calculate target position
-        Vector3 targetPosition = transform.position + direction * enemyData.MoveDistance;
+        Vector3 targetPosition = rb.position + direction * enemyData.MoveDistance;
         
         // Check for collisions with other enemies
         if (CheckCollisionAtPosition(targetPosition))
@@ -135,7 +135,7 @@ public class Enemy : MonoBehaviour
             {
                 float angle = 30f * i;
                 Vector3 altDirection = Quaternion.Euler(0f, angle, 0f) * direction;
-                Vector3 altPosition = transform.position + altDirection * enemyData.MoveDistance;
+                Vector3 altPosition = rb.position + altDirection * enemyData.MoveDistance;
                 
                 if (!CheckCollisionAtPosition(altPosition))
                 {
@@ -145,7 +145,7 @@ public class Enemy : MonoBehaviour
                 
                 // Try negative angle
                 altDirection = Quaternion.Euler(0f, -angle, 0f) * direction;
-                altPosition = transform.position + altDirection * enemyData.MoveDistance;
+                altPosition = rb.position + altDirection * enemyData.MoveDistance;
                 
                 if (!CheckCollisionAtPosition(altPosition))
                 {
@@ -187,7 +187,7 @@ public class Enemy : MonoBehaviour
         
         float moveDuration = 0.2f;
         
-        transform.DOMove(targetPosition, moveDuration)
+        rb.DOMove(targetPosition, moveDuration)
             .SetEase(Ease.OutQuad)
             .OnComplete(() => {
                 isMoving = false;

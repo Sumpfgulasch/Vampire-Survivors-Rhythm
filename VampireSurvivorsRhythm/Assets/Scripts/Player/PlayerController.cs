@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     private int beatCounter = 0;
     private bool isMoving = false;
     
-    public Vector3 Position => transform.position;
+    public Vector3 Position => rb.position;
     
     private void Awake()
     {
@@ -134,28 +134,32 @@ public class PlayerController : MonoBehaviour
     {
         if (isMoving) 
             return;
-        
+    
         float distance = gameConfig != null ? gameConfig.PlayerMoveDistance : moveDistance;
-        Vector3 targetPosition = transform.position + lastInputDirection * distance;
+        Vector3 targetPosition = rb.position + lastInputDirection * distance;
         isMoving = true;
-        
+    
         Sequence moveSequence = DOTween.Sequence();
-        
+    
         // Move
         moveSequence.Append(
-            rb.DOJump(targetPosition, jumpHeight, 1, jumpDuration)
+            transform.DOJump(targetPosition, jumpHeight, 1, jumpDuration)
                 .SetEase(Ease.OutQuad)
         );
-        
-        // Rotation
-        moveSequence.Join(
-            rb.DORotate(
-                transform.localEulerAngles + new Vector3(rotationAmount, 0f, 0f),
-                jumpDuration,
-                RotateMode.FastBeyond360
-            ).SetEase(Ease.Linear)
-        );
-        
+    
+        // Rotation - face the movement direction
+        if (lastInputDirection != Vector3.zero)
+        {
+            float targetAngle = Mathf.Atan2(lastInputDirection.x, lastInputDirection.z) * Mathf.Rad2Deg;
+            moveSequence.Join(
+                transform.DORotate(
+                    new Vector3(0f, targetAngle, 0f),
+                    jumpDuration,
+                    RotateMode.Fast
+                ).SetEase(Ease.OutQuad)
+            );
+        }
+    
         // On complete
         moveSequence.OnComplete(() => {
             isMoving = false;
