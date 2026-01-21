@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eed46abb34ab2094db9f801b1d9781aa, type: 3}
+  m_Name: Stage1
+  m_EditorClassIdentifier: Assembly-CSharp::StageConfigSO
+  StageNumber: 1
+  EnemySpawns:
+  - EnemyType: {fileID: 11400000, guid: ffeda0ecd7e501748a414258c8aadef8, type: 2}
+    Count: 5
+    SpawnWeight: 1
+  BeatsPerSpawn: 4
+  MaxEnemiesAlive: 20
+  ExperienceToNextLevel: 10
+  AvailableUpgrades:
+  - {fileID: 11400000, guid: 45ea58aaa3e4454439f79a4aaad558f9, type: 2}
+  AvailableNewAttacks: []
