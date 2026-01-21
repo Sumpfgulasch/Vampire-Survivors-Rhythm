@@ -15,9 +15,9 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float currentHealth;
     
     [Header("Events")]
-    public UnityEvent<float, float> OnHealthChanged = new UnityEvent<float, float>(); // current, max
-    public UnityEvent OnDamaged = new UnityEvent();
-    public UnityEvent OnDeath = new UnityEvent();
+    public UnityEvent<float, float> OnHealthChanged { get; private set; } = new(); // current, max
+    public UnityEvent OnDamaged { get; private set; } = new();
+    public UnityEvent OnDeath { get; private set; } = new();
     
     [Header("Visual Feedback")]
     [SerializeField] private Renderer playerRenderer;

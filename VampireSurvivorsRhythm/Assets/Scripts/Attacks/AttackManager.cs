@@ -69,7 +69,7 @@ public class AttackManager : MonoBehaviour
         switch (attackData.Category)
         {
             case AttackCategory.Projectile:
-                attack = attackObj.AddComponent<ProjectileAttack>();
+                attack = attackObj.AddComponent<PlayerProjectileAttack>();
                 break;
                 
             // Add other attack types here when implemented

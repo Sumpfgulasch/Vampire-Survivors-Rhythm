@@ -34,6 +34,8 @@ public class PlayerProjectile : MonoBehaviour
         {
             transform.forward = direction;
         }
+
+        MoveProjectile();
         
         // Auto-destroy after lifetime
         if (data != null && data.Lifetime > 0)

@@ -15,7 +15,7 @@ MonoBehaviour:
   BPM: 120
   BeatTolerance: 0.1
   StartingPlayerHealth: 3
-  PlayerMoveDistance: 1
+  PlayerMoveDistance: 1.1
   PlayerBeatsPerMove: 2
   SpawnRadius: 15
   MinSpawnDistance: 10

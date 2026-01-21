@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Projectile attack implementation
 /// </summary>
-public class ProjectileAttack : AttackInstance
+public class PlayerProjectileAttack : AttackInstance
 {
     protected override void ExecuteAttack()
     {
@@ -21,7 +21,8 @@ public class ProjectileAttack : AttackInstance
         Vector3 direction = playerController != null ? playerController.GetFacingDirection() : Vector3.forward;
         
         // Spawn projectile at player position
-        GameObject projObj = Instantiate(projectileData.VisualPrefab, player.position, Quaternion.identity);
+        var pos = player.position + direction * 0.5f;
+        GameObject projObj = Instantiate(projectileData.VisualPrefab, pos, Quaternion.identity);
         
         // Add PlayerProjectile component if not already present
         PlayerProjectile proj = projObj.GetComponent<PlayerProjectile>();
