@@ -71,7 +71,6 @@ public class GameStateManager : MonoBehaviour
                 break;
                 
             case GameState.GameOver:
-                musicSnapshot = AudioManager.Instance.PlaySnapshot(AudioSnapshot.FilteredMusic);
                 AudioManager.Instance.SetGlobalParameter(FmodParameter.GAME_LOST, 1f);
                 
                 BeatManager.Instance.StopBeat();

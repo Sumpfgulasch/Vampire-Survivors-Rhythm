@@ -15,8 +15,8 @@ MonoBehaviour:
   AttackName: Attack
   Icon: {fileID: 0}
   VisualPrefab: {fileID: 6513702126159373401, guid: 39553bf6b8d1b114cbf2af527b1aab1b, type: 3}
-  BeatsToSpawn: 4
-  Damage: 0
+  BeatsToSpawn: 2
+  Damage: 0.5
   Category: 0
   MoveDistance: 1.5
   BeatsToMove: 1
