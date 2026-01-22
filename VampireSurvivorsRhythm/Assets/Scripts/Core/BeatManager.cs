@@ -1,3 +1,4 @@
+using Audio;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -27,6 +28,7 @@ public class BeatManager : MonoBehaviour
     private float nextBeatTime;
     private float gameStartTime;
     private bool isPlaying;
+    private bool musicStarted = false;
     
     private void Awake()
     {
@@ -105,6 +107,14 @@ public class BeatManager : MonoBehaviour
             {
                 Debug.Log($"Beat {CurrentBeat} at time {currentTime:F2}");
             }
+        }
+        
+        
+        
+        if (!musicStarted && CurrentBeat == 1)
+        {
+            GameStateManager.Instance.OnStartMusic();
+            musicStarted = true;
         }
     }
     

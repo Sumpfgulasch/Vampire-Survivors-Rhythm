@@ -1,3 +1,5 @@
+using Audio;
+using FMOD.Studio;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,6 +20,9 @@ public class GameStateManager : MonoBehaviour
     public bool IsGameplayActive => currentState == GameState.Gameplay;
     public bool IsPaused => currentState == GameState.UpgradeSelection;
     
+    private EventInstance musicSnapshot;
+    private EventInstance music;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -35,6 +40,10 @@ public class GameStateManager : MonoBehaviour
     {
         SetState(GameState.Gameplay);
     }
+
+    public void OnStartMusic() {
+        music = AudioManager.Instance.Play2DAudio(AudioEvent.GameplayMusic);
+    }
     
     /// <summary>
     /// Change the current game state
@@ -51,26 +60,21 @@ public class GameStateManager : MonoBehaviour
         {
             case GameState.Gameplay:
                 Time.timeScale = 1f;
-                if (BeatManager.Instance != null)
-                {
-                    BeatManager.Instance.ResumeBeat();
-                }
+                AudioManager.Instance.StopSnapshot(musicSnapshot);
+                BeatManager.Instance.ResumeBeat();
                 break;
                 
             case GameState.UpgradeSelection:
                 Time.timeScale = 0f;
-                if (BeatManager.Instance != null)
-                {
-                    BeatManager.Instance.StopBeat();
-                }
+                musicSnapshot = AudioManager.Instance.PlaySnapshot(AudioSnapshot.FilteredMusic);
+                BeatManager.Instance.StopBeat();
                 break;
                 
             case GameState.GameOver:
-                //Time.timeScale = 0f;
-                if (BeatManager.Instance != null)
-                {
-                    BeatManager.Instance.StopBeat();
-                }
+                musicSnapshot = AudioManager.Instance.PlaySnapshot(AudioSnapshot.FilteredMusic);
+                AudioManager.Instance.SetGlobalParameter(FmodParameter.GAME_LOST, 1f);
+                
+                BeatManager.Instance.StopBeat();
                 break;
         }
         
@@ -107,6 +111,10 @@ public class GameStateManager : MonoBehaviour
     /// </summary>
     public void RestartGame()
     {
+        AudioManager.Instance.StopSnapshot(musicSnapshot);
+        AudioManager.Instance.StopAudio(music);
+        AudioManager.Instance.SetGlobalParameter(FmodParameter.GAME_LOST, 0);
+        
         Time.timeScale = 1f;
         UnityEngine.SceneManagement.SceneManager.LoadScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().name

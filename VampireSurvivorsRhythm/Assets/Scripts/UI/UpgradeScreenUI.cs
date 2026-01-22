@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using Audio;
+using FMOD.Studio;
 
 /// <summary>
 /// Manages the upgrade selection screen

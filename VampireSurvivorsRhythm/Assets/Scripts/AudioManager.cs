@@ -2,24 +2,18 @@ using FMOD.Studio;
 using UnityEngine;
 
 public class FmodParameter {
-    public const string FLEEING_ENEMIES = "FleeingEnemies";
-    public const string PLAYER_STATE = "PlayerState";
-    public const string LOCAL_ENEMY_STATE = "EnemyState";
+    public const string GAME_LOST = "GameLost";
 }
 
-public class AudioManager : MonoBehaviour
-{
+public class AudioManager : MonoBehaviour {
     public static AudioManager Instance;
-    
-    void Awake()
-    {
-        if (Instance == null)
-        {
+
+    void Awake() {
+        if (Instance == null) {
             Instance = this;
             //DontDestroyOnLoad(gameObject);
         }
-        else
-        {
+        else {
             Destroy(gameObject);
         }
     }
@@ -32,17 +26,33 @@ public class AudioManager : MonoBehaviour
         return instance;
     }
 
+    public EventInstance Play2DAudio(FMOD.GUID audioEvent) {
+        var instance = FMODUnity.RuntimeManager.CreateInstance(audioEvent);
+        instance.start();
+        return instance;
+    }
+
+    public EventInstance PlaySnapshot(FMOD.GUID snapshot) {
+        var instance = FMODUnity.RuntimeManager.CreateInstance(snapshot);
+        instance.start();
+        return instance;
+    }
+    
+    public void StopSnapshot(EventInstance snapshot) {
+        snapshot.stop(STOP_MODE.ALLOWFADEOUT);
+    }
+
     public void StopAudio(EventInstance instance) {
         if (instance.isValid()) {
             instance.stop(STOP_MODE.ALLOWFADEOUT);
         }
     }
-    
+
     public void SetGlobalParameter(string fmodParameter, float value) {
         FMODUnity.RuntimeManager.StudioSystem.setParameterByName(fmodParameter, value);
     }
 
-    public void SetLocalParameter(EventInstance fmodEvent,string fmodParameter, float value) {
+    public void SetLocalParameter(EventInstance fmodEvent, string fmodParameter, float value) {
         if (!fmodEvent.isValid()) {
             return;
         }

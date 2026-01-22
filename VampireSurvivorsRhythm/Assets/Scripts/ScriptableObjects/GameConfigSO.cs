@@ -10,6 +10,8 @@ public class GameConfigSO : ScriptableObject
     [Tooltip("Beats per minute for the music track")]
     [Range(60f, 200f)]
     public float BPM = 120f;
+    [Range(1, 12)]
+    public int BeatsPerBar = 4;
     
     [Tooltip("Tolerance window for 'on-beat' actions (in seconds)")]
     [Range(0.05f, 0.3f)]

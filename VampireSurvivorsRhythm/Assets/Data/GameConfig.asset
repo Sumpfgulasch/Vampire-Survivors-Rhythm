@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 841801718acdc3140a89f68d86720ba5, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: Assembly-CSharp::GameConfigSO
-  BPM: 120
+  BPM: 110
   BeatTolerance: 0.1
   StartingPlayerHealth: 3
   PlayerMoveDistance: 1.1
