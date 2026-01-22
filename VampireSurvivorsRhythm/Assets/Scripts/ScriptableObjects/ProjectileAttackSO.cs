@@ -12,6 +12,8 @@ public class ProjectileAttackSO : AttackTypeSO
     
     [Tooltip("How many beats between projectile movements")]
     public float BeatsToMove = 0.5f;
+
+    public float MaxRange = 7f;
     
     [Header("Projectile Behavior")]
     [Tooltip("Destroy projectile on hit")]

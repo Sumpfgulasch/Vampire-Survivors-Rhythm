@@ -15,11 +15,12 @@ MonoBehaviour:
   AttackName: Attack
   Icon: {fileID: 0}
   VisualPrefab: {fileID: 6513702126159373401, guid: 39553bf6b8d1b114cbf2af527b1aab1b, type: 3}
-  BeatsToSpawn: 2
+  BeatsToSpawn: 4
   Damage: 1
   Category: 0
   MoveDistance: 1.5
-  BeatsToMove: 0.5
+  BeatsToMove: 1
+  MaxRange: 10
   DestroyOnHit: 1
   MaxPierceCount: 0
   Lifetime: 5

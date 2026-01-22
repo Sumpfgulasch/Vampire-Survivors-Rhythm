@@ -18,7 +18,7 @@ public class PlayerProjectileAttack : PlayerAttackInstance {
             .OrderBy(e => Vector3.Distance(e.transform.position, player.position)).FirstOrDefault();
         
         // Don't shoot if no enemy close
-        if (closestEnemy == null) 
+        if (closestEnemy == null || Vector3.Distance(closestEnemy.transform.position, player.position) > projectileData.MaxRange) 
             return;
 
         // instantiate
