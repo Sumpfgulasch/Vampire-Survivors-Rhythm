@@ -66,7 +66,7 @@ public class GameStateManager : MonoBehaviour
                 break;
                 
             case GameState.GameOver:
-                Time.timeScale = 0f;
+                //Time.timeScale = 0f;
                 if (BeatManager.Instance != null)
                 {
                     BeatManager.Instance.StopBeat();

@@ -76,6 +76,7 @@ public class PlayerHealth : MonoBehaviour
         
         // Visual feedback
         FlashDamage();
+        FeedbackManager.Instance.TriggerDamageFeedback();
         
         // Start invincibility frames
         if (gameConfig != null)
@@ -91,6 +92,7 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth <= 0f)
         {
             Die();
+            FeedbackManager.Instance.TriggerDeathFeedback();
         }
     }
     

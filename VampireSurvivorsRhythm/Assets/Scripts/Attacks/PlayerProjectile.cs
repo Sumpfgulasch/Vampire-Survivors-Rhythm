@@ -97,6 +97,7 @@ public class PlayerProjectile : MonoBehaviour
             {
                 enemy.TakeDamage(data.Damage);
                 pierceCount++;
+                FeedbackManager.Instance.TriggerHitFeedback(transform.position);
                 
                 // Check if we should destroy
                 if (data.DestroyOnHit || pierceCount > data.MaxPierceCount)
