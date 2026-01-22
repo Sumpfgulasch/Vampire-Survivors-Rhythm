@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Base class for all attack instances
 /// </summary>
-public abstract class AttackInstance : MonoBehaviour
+public abstract class PlayerAttackInstance : MonoBehaviour
 {
     protected AttackTypeSO attackData;
     protected Transform player;

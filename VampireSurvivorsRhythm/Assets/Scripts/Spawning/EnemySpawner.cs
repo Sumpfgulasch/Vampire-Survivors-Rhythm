@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Spawns enemies based on stage configuration
@@ -16,7 +17,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private bool showDebug = false;
     
     private int beatCounter = 0;
-    private List<GameObject> aliveEnemies = new List<GameObject>();
+    private List<GameObject> aliveEnemies = new();
+    public List<GameObject> AliveEnemies => aliveEnemies.Where(e => e != null).ToList();
     
     private void Awake()
     {

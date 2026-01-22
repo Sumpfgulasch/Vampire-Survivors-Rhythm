@@ -15,7 +15,7 @@ public class AttackManager : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool showDebug = false;
     
-    private List<AttackInstance> activeAttacks = new List<AttackInstance>();
+    private List<PlayerAttackInstance> activeAttacks = new List<PlayerAttackInstance>();
     
     private void Awake()
     {
@@ -64,7 +64,7 @@ public class AttackManager : MonoBehaviour
         attackObj.transform.SetParent(transform);
         
         // Add appropriate attack component based on category
-        AttackInstance attack = null;
+        PlayerAttackInstance attack = null;
         
         switch (attackData.Category)
         {
@@ -118,7 +118,7 @@ public class AttackManager : MonoBehaviour
         }
         
         // Find the target attack
-        AttackInstance targetAttack = null;
+        PlayerAttackInstance targetAttack = null;
         
         if (upgrade.TargetAttack != null)
         {
@@ -159,7 +159,7 @@ public class AttackManager : MonoBehaviour
     /// <summary>
     /// Apply upgrade modifications to an attack
     /// </summary>
-    private void ApplyUpgradeToAttack(AttackInstance attack, AttackUpgradeSO upgrade)
+    private void ApplyUpgradeToAttack(PlayerAttackInstance attack, AttackUpgradeSO upgrade)
     {
         // This is a simplified implementation
         // In a full implementation, you'd modify the attack's properties based on upgrade type
@@ -201,9 +201,9 @@ public class AttackManager : MonoBehaviour
     /// <summary>
     /// Get all active attacks
     /// </summary>
-    public List<AttackInstance> GetActiveAttacks()
+    public List<PlayerAttackInstance> GetActiveAttacks()
     {
-        return new List<AttackInstance>(activeAttacks);
+        return new List<PlayerAttackInstance>(activeAttacks);
     }
     
     /// <summary>

@@ -18,7 +18,7 @@ MonoBehaviour:
   BeatsToSpawn: 2
   Damage: 1
   Category: 0
-  MoveDistance: 1.6
+  MoveDistance: 1.5
   BeatsToMove: 0.5
   DestroyOnHit: 1
   MaxPierceCount: 0
