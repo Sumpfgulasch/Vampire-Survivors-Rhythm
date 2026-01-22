@@ -54,10 +54,11 @@ public class BeatFeedbackUI : MonoBehaviour
     /// </summary>
     private void OnBeat()
     {
-        if (beatOverlay == null) return;
+        if (beatOverlay == null) 
+            return;
         
         // Pulse the overlay
-        PulseOverlay();
+        PulseOverlay(); // TERROR
     }
     
     /// <summary>

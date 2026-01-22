@@ -47,6 +47,7 @@ public class UpgradeScreenUI : MonoBehaviour
     /// </summary>
     private void OnLevelUp(int level)
     {
+        FeedbackManager.Instance.TriggerLevelUpFeedback();
         ShowUpgradeOptions();
     }
     
