@@ -17,8 +17,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private bool showDebug = false;
     
     private int beatCounter = 0;
-    private List<GameObject> aliveEnemies = new();
-    public List<GameObject> AliveEnemies => aliveEnemies.Where(e => e != null).ToList();
+    private List<Enemy> aliveEnemies = new();
+    public List<Enemy> AliveEnemies => aliveEnemies.Where(e => e != null).ToList();
     
     private void Awake()
     {
@@ -77,7 +77,7 @@ public class EnemySpawner : MonoBehaviour
         if (stage == null) return;
         
         // Clean up dead enemies
-        aliveEnemies.RemoveAll(e => e == null);
+        aliveEnemies.RemoveAll(e => e.gameObject == null);
         
         // Check if we should spawn
         if (beatCounter >= stage.BeatsPerSpawn && aliveEnemies.Count < stage.MaxEnemiesAlive)
@@ -119,14 +119,14 @@ public class EnemySpawner : MonoBehaviour
         // Spawn enemy
         GameObject enemyObj = Instantiate(spawnData.EnemyType.Prefab, spawnPos, Quaternion.identity);
         Enemy enemy = enemyObj.GetComponent<Enemy>();
-        enemy.Init(player);
+        enemy.Init(player, gameConfig);
         
         if (enemy != null)
         {
             enemy.Initialize(spawnData.EnemyType, player);
         }
         
-        aliveEnemies.Add(enemyObj);
+        aliveEnemies.Add(enemy);
         
         if (showDebug)
         {
@@ -191,7 +191,7 @@ public class EnemySpawner : MonoBehaviour
     /// </summary>
     public int GetAliveEnemyCount()
     {
-        aliveEnemies.RemoveAll(e => e == null);
+        aliveEnemies.RemoveAll(e => e.gameObject == null);
         return aliveEnemies.Count;
     }
     

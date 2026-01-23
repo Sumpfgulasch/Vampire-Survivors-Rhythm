@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -23,12 +24,20 @@ public class Enemy : MonoBehaviour {
     protected float currentHealth;
     protected bool isMoving = false;
     protected bool isDead = false;
-    
-    private GameConfigSO gameConfig;
 
     // Properties
     public float CollisionDamage => enemyData != null ? enemyData.CollisionDamage : 0.5f;
     public bool IsDead => isDead;
+    
+    // Grid position tracking
+    public Vector2 CurrentGridPosition { get; set; }
+    public Vector2 TargetGridPosition { get; set; }
+    public Vector2 Position => CurrentGridPosition;
+    public Vector2 TargetPosition => moveIndicator != null ? moveIndicator.GridPosition : CurrentGridPosition;
+    
+    // private
+    private GameConfigSO gameConfig;
+    private GridCellIndicator moveIndicator;
 
     public void Init(Transform target, GameConfigSO gameConfig) {
         Target = target;
@@ -50,16 +59,13 @@ public class Enemy : MonoBehaviour {
         else {
             Debug.LogError("Enemy: No enemy data assigned!");
         }
+        
+        // Initialize grid position
+        CurrentGridPosition = new Vector2(transform.position.x, transform.position.z);
+        TargetGridPosition = CurrentGridPosition;
     }
 
     protected virtual void OnEnable() {
-        if (BeatManager.Instance != null) {
-            BeatManager.Instance.OnBeat.AddListener(OnBeat);
-        }
-        else {
-            FindFirstObjectByType<BeatManager>().OnBeat.AddListener(OnBeat);
-        }
-
         // Find player if not assigned
         if (Target == null) {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -70,155 +76,93 @@ public class Enemy : MonoBehaviour {
     }
 
     protected virtual void OnDisable() {
-        if (BeatManager.Instance != null) {
-            BeatManager.Instance.OnBeat.RemoveListener(OnBeat);
-        }
+
     }
 
     /// <summary>
-    /// Called on every beat
+    /// Called on every beat - simplified to only increment counter
+    /// EnemyManager handles all movement logic
     /// </summary>
-    protected virtual void OnBeat() {
+    public virtual void OnBeat() {
         if (isDead || isMoving) return;
-
+        
         if (GameStateManager.Instance != null && !GameStateManager.Instance.IsGameplayActive) {
             return;
         }
 
         beatCounter++;
-        
-        if (beatCounter - enemyData.BeatsToMove == gameConfig.EnemyMoveIndicatorBeats) {
-            ShowMoveIndicator();
-        }
-
-        // Check if it's time to move
-        if (beatCounter >= enemyData.BeatsToMove) {
-            beatCounter = 0;
-            ExecuteBehavior();
-        }
     }
     
-    protected void ShowMoveIndicator() {
-        
+    /// <summary>
+    /// Check if this enemy should show move indicator this beat
+    /// </summary>
+    public bool MustShowMoveIndicator() {
+        return beatCounter == (enemyData.BeatsToMove - gameConfig.EnemyMoveIndicatorBeats);
+    }
+    
+    /// <summary>
+    /// Check if this enemy should move this beat
+    /// </summary>
+    public bool MustMove() {
+        return beatCounter >= enemyData.BeatsToMove;
     }
 
-    /// <summary>
-    /// Execute the enemy's behavior (override in derived classes)
-    /// </summary>
+    // OLD MOVEMENT METHODS - Now handled by EnemyManager
+    // Commented out but kept for reference
+    
+    /*
     protected virtual void ExecuteBehavior() {
-        // Default behavior: move toward player
         if (Target != null) {
             MoveTowardTarget();
         }
     }
 
-    /// <summary>
-    /// Move toward the target
-    /// </summary>
     protected virtual void MoveTowardTarget() {
-        if (Target == null || enemyData == null) return;
-
-        // Calculate direction to target
-        Vector3 direction = (Target.position - rb.position);
-        direction.y = 0f; // Keep on XZ plane
-
-        // Determine grid direction (snap to cardinal/diagonal directions)
-        Vector3 gridDirection = GetGridDirection(direction);
-
-        // Calculate target position on grid
-        Vector3 targetPosition = rb.position + gridDirection * enemyData.MoveDistance;
-
-        // Snap to grid
-        targetPosition = SnapToGrid(targetPosition);
-
-        // Check for collisions with other enemies
-        if (CheckCollisionAtPosition(targetPosition)) {
-            // Try alternative grid directions in order of preference
-            Vector3[] alternativeDirections = GetAlternativeGridDirections(gridDirection);
-
-            foreach (Vector3 altDir in alternativeDirections) {
-                Vector3 altPosition = rb.position + altDir * enemyData.MoveDistance;
-                altPosition = SnapToGrid(altPosition);
-
-                if (!CheckCollisionAtPosition(altPosition)) {
-                    targetPosition = altPosition;
-                    break;
-                }
-            }
-        }
-
-        // Move to target position
-        MoveTo(targetPosition);
+        // Movement logic moved to EnemyManager
     }
 
-    protected Vector3 GetGridDirection(Vector3 direction)
-    {
-        float absX = Mathf.Abs(direction.x);
-        float absZ = Mathf.Abs(direction.z);
-    
-        // 4-directional (cardinal only)
-        if (absX > absZ)
-            return new Vector3(Mathf.Sign(direction.x), 0f, 0f);
-        else
-            return new Vector3(0f, 0f, Mathf.Sign(direction.z));
+    protected Vector3 GetGridDirection(Vector3 direction) {
+        // Moved to EnemyManager
     }
 
     protected Vector3 SnapToGrid(Vector3 position) {
-        float gridSize = enemyData.MoveDistance; // Or use a separate grid size variable
-
-        return new Vector3(
-            Mathf.Round(position.x / gridSize) * gridSize,
-            position.y,
-            Mathf.Round(position.z / gridSize) * gridSize
-        );
+        // Moved to EnemyManager
     }
 
     protected Vector3[] GetAlternativeGridDirections(Vector3 primaryDirection) {
-        // Get angle of primary direction
-        float primaryAngle = Mathf.Atan2(primaryDirection.z, primaryDirection.x) * Mathf.Rad2Deg;
-
-        // Create array of alternative directions, ordered by preference
-        List<Vector3> alternatives = new List<Vector3>();
-
-        // Try directions 45 degrees to either side, then 90, then 135, then opposite
-        float[] angleOffsets = { 45f, -45f, 90f, -90f, 135f, -135f, 180f };
-
-        foreach (float offset in angleOffsets) {
-            float angle = (primaryAngle + offset) * Mathf.Deg2Rad;
-            Vector3 dir = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)).normalized;
-            alternatives.Add(dir);
-        }
-
-        return alternatives.ToArray();
+        // Moved to EnemyManager
     }
 
-    /// <summary>
-    /// Check if there's a collision at the target position
-    /// </summary>
     protected bool CheckCollisionAtPosition(Vector3 position) {
-        float checkRadius = 0.4f;
-        Collider[] colliders = Physics.OverlapSphere(position, checkRadius);
-
-        foreach (Collider other in colliders) {
-            if (other != col && other.CompareTag("Enemy")) {
-                return true;
-            }
-        }
-
-        return false;
+        // Moved to EnemyManager
     }
+    */
 
     /// <summary>
     /// Move to a specific position with animation
     /// </summary>
-    protected virtual void MoveTo(Vector3 targetPosition) {
+    protected virtual void MoveTo(Vector3 targetPosition, Action onComplete = null) {
         isMoving = true;
+        
+        // Update current grid position
+        CurrentGridPosition = new Vector2(targetPosition.x, targetPosition.z);
 
         float moveDuration = 0.2f;
 
         rb.DOMove(targetPosition, moveDuration)
             .SetEase(Ease.OutQuad)
-            .OnComplete(() => { isMoving = false; });
+            .OnComplete(() => {
+                isMoving = false;
+                onComplete?.Invoke();
+            });
+    }
+    
+    /// <summary>
+    /// Public wrapper for EnemyManager to call - moves and resets beat counter
+    /// </summary>
+    public void MoveToPosition(Vector3 targetPosition) {
+        MoveTo(targetPosition, DestroyMoveIndicator);
+        beatCounter = 0;
     }
 
     /// <summary>
@@ -267,6 +211,9 @@ public class Enemy : MonoBehaviour {
         if (showDebug) {
             Debug.Log($"{gameObject.name} died");
         }
+        
+        // Destroy move indicator if it exists
+        DestroyMoveIndicator();
 
         // Drop experience gem
         if (enemyData != null && enemyData.ExperienceValue > 0) {
@@ -276,7 +223,9 @@ public class Enemy : MonoBehaviour {
         // Death animation
         transform.DOScale(Vector3.zero, 0.3f)
             .SetEase(Ease.InBack)
-            .OnComplete(() => { Destroy(gameObject); });
+            .OnComplete(() => {
+                Destroy(gameObject);
+            });
     }
 
     /// <summary>
@@ -289,6 +238,42 @@ public class Enemy : MonoBehaviour {
         if (enemyData != null) {
             currentHealth = enemyData.Health;
         }
+    }
+
+    /// <summary>
+    /// Show move indicator at target position - called by EnemyManager
+    /// </summary>
+    public void ShowMoveIndicator(Vector3 targetPosition) {
+        // Destroy existing indicator if any
+        if (moveIndicator != null) {
+            DestroyMoveIndicator();
+        }
+        
+        var moveIndicatorPos = new Vector3(targetPosition.x, gameConfig.MoveIndicatorYOffset, targetPosition.z);
+        
+        moveIndicator = Instantiate(
+            EnemyManager.Instance.moveIndicatorPrefab,
+            moveIndicatorPos,
+            Quaternion.identity
+        );
+        
+        // Store grid position
+        TargetGridPosition = new Vector2(targetPosition.x, targetPosition.z);
+        moveIndicator.GridPosition = TargetGridPosition;
+        
+        // Optional: Set indicator color/intensity
+        //moveIndicator.SetEmissiveColor(Color.yellow, 2f);
+    }
+
+    /// <summary>
+    /// Destroy move indicator - called when moving or dying
+    /// </summary>
+    public void DestroyMoveIndicator() {
+        if (moveIndicator == null)
+            return;
+        
+        Destroy(moveIndicator.gameObject);
+        moveIndicator = null;
     }
 
     protected virtual void OnDrawGizmos() {

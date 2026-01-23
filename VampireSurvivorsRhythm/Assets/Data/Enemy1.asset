@@ -15,7 +15,7 @@ MonoBehaviour:
   EnemyName: Enemy
   Prefab: {fileID: 1646191824597339629, guid: 72d69efbba9ff9b4e9fe1ba11b9ca824, type: 3}
   MoveDistance: 1
-  BeatsToMove: 4
+  BeatsToMove: 2
   CollisionDamage: 0.5
   Health: 1
   ExperienceValue: 1

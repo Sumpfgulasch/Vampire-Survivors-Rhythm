@@ -7,7 +7,7 @@ public class EnemyRanged : Enemy
 {
     private int shootBeatCounter = 0;
     
-    protected override void OnBeat()
+    public override void OnBeat()
     {
         base.OnBeat();
         

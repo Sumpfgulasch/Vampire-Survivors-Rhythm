@@ -28,14 +28,10 @@ public class GameConfigSO : ScriptableObject
     public int PlayerBeatsPerMove = 2;
 
     [Header("Enemy Settings")] 
-    public float EnemyMoveIndicatorBeats = 1f;
-    
-    [Header("Spawning Settings")]
-    [Tooltip("Distance from player where enemies spawn")]
-    public float SpawnRadius = 15f;
-    
-    [Tooltip("Minimum distance from player for spawning")]
-    public float MinSpawnDistance = 10f;
+    public int EnemyMoveIndicatorBeats = 1;
+    [Tooltip("Distance from player where enemies spawn")] public float SpawnRadius = 15f;
+    [Tooltip("Minimum distance from player for spawning")] public float MinSpawnDistance = 10f;
+    public float MoveIndicatorYOffset = 0.02f;
     
     [Header("Gameplay Settings")]
     [Tooltip("Duration of invincibility after taking damage (in seconds)")]

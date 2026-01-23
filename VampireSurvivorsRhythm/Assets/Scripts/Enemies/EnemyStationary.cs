@@ -5,9 +5,9 @@ using UnityEngine;
 /// </summary>
 public class EnemyStationary : Enemy
 {
-    protected override void ExecuteBehavior()
-    {
-        // Override to do nothing - stationary enemy doesn't move
-        // Still damages player on collision
-    }
+    // protected override void ExecuteBehavior()
+    // {
+    //     // Override to do nothing - stationary enemy doesn't move
+    //     // Still damages player on collision
+    // }
 }
