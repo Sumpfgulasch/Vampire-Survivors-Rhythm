@@ -73,32 +73,85 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    private void Update()
+    private Vector2 lastFrameInput = Vector2.zero;
+private bool horizontalWasPressedLast = false;
+
+private void Update()
+{
+    if (GameStateManager.Instance != null && !GameStateManager.Instance.IsGameplayActive)
     {
-        if (GameStateManager.Instance != null && !GameStateManager.Instance.IsGameplayActive)
-        {
-            return;
-        }
-        
-        // Read input every frame and store direction
-        ReadInput();
+        return;
     }
     
-    /// <summary>
-    /// Read input from the Input System
-    /// </summary>
-    private void ReadInput()
+    ReadInput();
+}
+
+/// <summary>
+/// Read input from the Input System
+/// </summary>
+private void ReadInput()
+{
+    if (moveAction == null || moveAction.action == null) 
+        return;
+    
+    Vector2 input = moveAction.action.ReadValue<Vector2>();
+    
+    if (input.sqrMagnitude > 0.01f)
     {
-        if (moveAction == null || moveAction.action == null) return;
+        // Convert to cardinal direction only (no diagonals)
+        Vector2 cardinalInput = GetCardinalDirectionByRecency(input);
         
-        Vector2 input = moveAction.action.ReadValue<Vector2>();
-        
-        if (input.sqrMagnitude > 0.01f)
-        {
-            // Convert 2D input to 3D direction (XZ plane)
-            lastInputDirection = new Vector3(input.x, 0f, input.y).normalized;
-        }
+        // Convert 2D input to 3D direction (XZ plane)
+        lastInputDirection = new Vector3(cardinalInput.x, 0f, cardinalInput.y);
     }
+    
+    // Track input for next frame
+    lastFrameInput = input;
+}
+
+/// <summary>
+/// Converts input to cardinal direction based on most recently pressed axis
+/// </summary>
+private Vector2 GetCardinalDirectionByRecency(Vector2 input)
+{
+    float absX = Mathf.Abs(input.x);
+    float absY = Mathf.Abs(input.y);
+    
+    bool horizontalPressed = absX > 0.01f;
+    bool verticalPressed = absY > 0.01f;
+    
+    // Check if a new axis was just pressed
+    bool horizontalJustPressed = horizontalPressed && Mathf.Abs(lastFrameInput.x) <= 0.01f;
+    bool verticalJustPressed = verticalPressed && Mathf.Abs(lastFrameInput.y) <= 0.01f;
+    
+    // Update which axis was pressed most recently
+    if (horizontalJustPressed)
+        horizontalWasPressedLast = true;
+    else if (verticalJustPressed)
+        horizontalWasPressedLast = false;
+    
+    // If both are pressed, use the most recently pressed one
+    if (horizontalPressed && verticalPressed)
+    {
+        if (horizontalWasPressedLast)
+            return new Vector2(Mathf.Sign(input.x), 0f);
+        else
+            return new Vector2(0f, Mathf.Sign(input.y));
+    }
+    // If only one is pressed, use that one
+    else if (horizontalPressed)
+    {
+        horizontalWasPressedLast = true;
+        return new Vector2(Mathf.Sign(input.x), 0f);
+    }
+    else if (verticalPressed)
+    {
+        horizontalWasPressedLast = false;
+        return new Vector2(0f, Mathf.Sign(input.y));
+    }
+    
+    return Vector2.zero;
+}
     
     /// <summary>
     /// Called on every beat

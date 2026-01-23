@@ -1,3 +1,4 @@
+using System;
 using Audio;
 using UnityEngine;
 using UnityEngine.Events;
@@ -24,7 +25,11 @@ public class BeatManager : MonoBehaviour
     public float SecondsPerBeat => 60f / BPM;
     public int CurrentBeat { get; private set; }
     public float BeatProgress { get; private set; } // 0-1 within current beat
-    
+    /// <summary>
+    /// Get the time until the next beat
+    /// </summary>
+    public float TimeUntilNextBeat() => nextBeatTime - Time.time;
+
     private float nextBeatTime;
     private float gameStartTime;
     private bool isPlaying;
@@ -139,14 +144,6 @@ public class BeatManager : MonoBehaviour
     public bool IsBeatInterval(int interval)
     {
         return CurrentBeat % interval == 0;
-    }
-    
-    /// <summary>
-    /// Get the time until the next beat
-    /// </summary>
-    public float TimeUntilNextBeat()
-    {
-        return nextBeatTime - Time.time;
     }
     
     private void OnGUI()
