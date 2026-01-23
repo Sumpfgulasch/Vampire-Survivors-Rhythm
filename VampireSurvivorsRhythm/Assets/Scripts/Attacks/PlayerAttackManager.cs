@@ -4,9 +4,9 @@ using System.Collections.Generic;
 /// <summary>
 /// Manages all active player attacks
 /// </summary>
-public class AttackManager : MonoBehaviour
+public class PlayerAttackManager : MonoBehaviour
 {
-    public static AttackManager Instance { get; private set; }
+    public static PlayerAttackManager Instance { get; private set; }
     
     [Header("Configuration")]
     [SerializeField] private Transform player;

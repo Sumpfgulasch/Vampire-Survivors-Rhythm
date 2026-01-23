@@ -143,10 +143,10 @@ public class UpgradeScreenUI : MonoBehaviour {
 
             // Apply the upgrade or add the attack
             if (selectedOption is AttackUpgradeSO upgrade) {
-                AttackManager.Instance.ApplyUpgrade(upgrade);
+                PlayerAttackManager.Instance.ApplyUpgrade(upgrade);
             }
             else if (selectedOption is AttackTypeSO attack) {
-                AttackManager.Instance.AddAttack(attack);
+                PlayerAttackManager.Instance.AddAttack(attack);
             }
             
             GameStateManager.Instance.StartGameplay();

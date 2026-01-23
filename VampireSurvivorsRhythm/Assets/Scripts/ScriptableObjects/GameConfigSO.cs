@@ -26,6 +26,9 @@ public class GameConfigSO : ScriptableObject
     
     [Tooltip("How many beats between player movements")]
     public int PlayerBeatsPerMove = 2;
+
+    [Header("Enemy Settings")] 
+    public float EnemyMoveIndicatorBeats = 1f;
     
     [Header("Spawning Settings")]
     [Tooltip("Distance from player where enemies spawn")]

@@ -23,13 +23,16 @@ public class Enemy : MonoBehaviour {
     protected float currentHealth;
     protected bool isMoving = false;
     protected bool isDead = false;
+    
+    private GameConfigSO gameConfig;
 
     // Properties
     public float CollisionDamage => enemyData != null ? enemyData.CollisionDamage : 0.5f;
     public bool IsDead => isDead;
 
-    public void Init(Transform target) {
+    public void Init(Transform target, GameConfigSO gameConfig) {
         Target = target;
+        this.gameConfig = gameConfig;
     }
 
     protected virtual void Awake() {
@@ -43,6 +46,9 @@ public class Enemy : MonoBehaviour {
         // Initialize health
         if (enemyData != null) {
             currentHealth = enemyData.Health;
+        }
+        else {
+            Debug.LogError("Enemy: No enemy data assigned!");
         }
     }
 
@@ -80,12 +86,20 @@ public class Enemy : MonoBehaviour {
         }
 
         beatCounter++;
+        
+        if (beatCounter - enemyData.BeatsToMove == gameConfig.EnemyMoveIndicatorBeats) {
+            ShowMoveIndicator();
+        }
 
         // Check if it's time to move
-        if (enemyData != null && beatCounter >= enemyData.BeatsToMove) {
+        if (beatCounter >= enemyData.BeatsToMove) {
             beatCounter = 0;
             ExecuteBehavior();
         }
+    }
+    
+    protected void ShowMoveIndicator() {
+        
     }
 
     /// <summary>

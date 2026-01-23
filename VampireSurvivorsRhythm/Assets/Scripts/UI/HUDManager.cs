@@ -129,9 +129,9 @@ public class HUDManager : MonoBehaviour
             enemyCountText.text = $"Enemies: {EnemySpawner.Instance.GetAliveEnemyCount()}";
         }
         
-        if (attackCountText != null && AttackManager.Instance != null)
+        if (attackCountText != null && PlayerAttackManager.Instance != null)
         {
-            attackCountText.text = $"Attacks: {AttackManager.Instance.GetActiveAttackCount()}";
+            attackCountText.text = $"Attacks: {PlayerAttackManager.Instance.GetActiveAttackCount()}";
         }
     }
 }
